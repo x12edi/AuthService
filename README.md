@@ -1,6 +1,5 @@
 # Auth-Service
-# Overview
-- auth-app is a full-stack authentication system with a role-based dashboard. The frontend, built with Next.js, provides a user-friendly interface for login, registration, and user management. The backend, powered by ASP.NET Core, implements secure authentication using Microsoft Identity, supporting JWT-based login, registration with email confirmation, and role management. The application uses the Unit of Work and Repository patterns for clean data access and maintainability.
+Auth-Service is a full-stack authentication system with a role-based dashboard. The frontend, built with Next.js, provides a user-friendly interface for login, registration, and user management. The backend, powered by ASP.NET Core, implements secure authentication using Microsoft Identity, supporting JWT-based login, registration with email confirmation, and role management. The application uses the Unit of Work and Repository patterns for clean data access and maintainability.
 
 # Features
 - User registration with email confirmation
@@ -9,7 +8,6 @@
 - User management (view and update roles)
 - Responsive UI with Ant Design
 
-# Tech Stack
 # Frontend
 - Next.js: React framework for server-side rendering and routing
 - Ant Design: UI component library for forms, menus, and layouts
