@@ -1,0 +1,70 @@
+* commands to create the solution and projects:
+dotnet new sln -n AuthService
+dotnet new classlib -n AuthService.Domain -o AuthService.Domain
+dotnet new classlib -n AuthService.Application -o AuthService.Application
+dotnet new classlib -n AuthService.Infrastructure -o AuthService.Infrastructure
+dotnet new webapi -n AuthService.API -o AuthService.API
+
+* Add projects to the solution:
+dotnet sln add AuthService.Domain/AuthService.Domain.csproj
+dotnet sln add AuthService.Application/AuthService.Application.csproj
+dotnet sln add AuthService.Infrastructure/AuthService.Infrastructure.csproj
+dotnet sln add AuthService.API/AuthService.API.csproj
+
+* Set up project references:
+cd AuthService.API
+dotnet add reference ../AuthService.Application/AuthService.Application.csproj ../AuthService.Infrastructure/AuthService.Infrastructure.csproj
+cd ../AuthService.Application
+dotnet add reference ../AuthService.Domain/AuthService.Domain.csproj
+cd ../AuthService.Infrastructure
+dotnet add reference ../AuthService.Domain/AuthService.Domain.csproj
+cd ..
+
+* Install initial NuGet packages for each project:
+cd AuthService.Infrastructure
+dotnet add package Microsoft.EntityFrameworkCore --version 8.0.0
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.0
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 8.0.0
+cd ../AuthService.API
+dotnet add package Swashbuckle.AspNetCore --version 6.5.0
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 8.0.0
+cd ..
+
+* Solution structure:
+AuthService.sln
+├── AuthService.Domain
+│   └── AuthService.Domain.csproj
+├── AuthService.Application
+│   └── AuthService.Application.csproj
+├── AuthService.Infrastructure
+│   └── AuthService.Infrastructure.csproj
+├── AuthService.API
+│   └── AuthService.API.csproj
+
+* Add identity package
+cd AuthService.Domain
+dotnet add package Microsoft.AspNetCore.Identity --version 2.3.1
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 8.0.0
+cd ..
+
+cd AuthService.Application
+dotnet add package Microsoft.AspNetCore.Identity --version 2.3.1
+dotnet add package Microsoft.IdentityModel.Tokens --version 8.12.1
+dotnet add package System.IdentityModel.Tokens.Jwt --version 8.12.1
+dotnet add package MailKit --version 4.12.1
+cd ..
+
+cd AuthService.API
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 8.0.0
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 8.0.0
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 8.0.0
+dotnet add package Swashbuckle.AspNetCore --version 6.5.0
+cd ..
+
+set <InvariantGlobalization>false</InvariantGlobalization> in AuthService.API.csproj
+dotnet ef migrations add InitialCreate --project AuthService.Infrastructure --startup-project AuthService.API
+dotnet ef database update --project AuthService.Infrastructure --startup-project AuthService.API
+
+
+
+
