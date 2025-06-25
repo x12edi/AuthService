@@ -1,0 +1,36 @@
+name: Local CI/CD - ASP.NET Core
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'  # Change this based on your .NET Core version
+
+    - name: Restore Dependencies
+      run: dotnet restore
+
+    - name: Build App
+      run: dotnet build --configuration Release
+
+    - name: Publish App
+      run: dotnet publish -c Release -o ./publish
+
+    - name: Deploy to IIS
+      shell: powershell
+      run: |
+        $destination = "C:\inetpub\wwwroot\myapp"
+        if (!(Test-Path $destination)) {
+          New-Item -ItemType Directory -Path $destination
+        }
+        robocopy ".\publish" $destination /E /MIR
