@@ -33,4 +33,15 @@ jobs:
         if (!(Test-Path $destination)) {
           New-Item -ItemType Directory -Path $destination
         }
+        # Run robocopy and capture the exit code
         robocopy ".\publish" $destination /E /MIR
+        $exitCode = $LASTEXITCODE
+        
+        # Treat exit codes 0-7 as success
+        if ($exitCode -le 7) {
+            Write-Host "Robocopy completed successfully with exit code $exitCode"
+            exit 0
+        } else {
+            Write-Error "Robocopy failed with exit code $exitCode"
+            exit $exitCode
+        }
